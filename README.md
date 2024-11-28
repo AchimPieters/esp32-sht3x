@@ -26,4 +26,44 @@ resistors.
 
 <img  style="float: right;" src="https://github.com/AchimPieters/ESP32-SmartPlug/blob/main/images/MIT%7C%20SOFTWARE%20WHITE.svg" width="150">
 
+## Include the Library in Your Code
+
+In your project's source code, include the SHT3x library headers:
+
+```
+#include "sht3x.h"
+```
+
+## Initialize the SHT3x Sensor
+
+Configure and initialize the SHT3x sensor using its APIs in your app_main.c file.
+Example Code:
+
+```
+#include <stdio.h>
+#include "sht3x.h"
+
+void app_main(void) {
+    // Configure the SHT3x sensor
+    if (sht3x_init() == ESP_OK) {
+        printf("SHT3x sensor initialized successfully!\n");
+    } else {
+        printf("Failed to initialize SHT3x sensor.\n");
+        return;
+    }
+
+    float temperature = 0.0f;
+    float humidity = 0.0f;
+
+    while (1) {
+        if (sht3x_get_measurement(&temperature, &humidity) == ESP_OK) {
+            printf("Temperature: %.2f °C, Humidity: %.2f %%\n", temperature, humidity);
+        } else {
+            printf("Failed to read measurements from SHT3x sensor.\n");
+        }
+        vTaskDelay(pdMS_TO_TICKS(2000));  // Delay for 2 seconds
+    }
+}
+```
+
 StudioPieters® | Innovation and Learning Labs | https://www.studiopieters.nl
