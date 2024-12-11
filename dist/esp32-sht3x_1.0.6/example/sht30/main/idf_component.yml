@@ -1,0 +1,2 @@
+dependencies:
+  achimpieters/esp32-sht3x: "^1.0.4"

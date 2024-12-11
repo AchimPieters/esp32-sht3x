@@ -1,5 +1,5 @@
 name: "esp32-sht3x"
-version: "1.0.5"
+version: "1.0.6"
 description: "ESP32 library for interfacing with SHT3x sensors."
 url: "https://github.com/AchimPieters/esp32-sht3x"
 maintainers:
