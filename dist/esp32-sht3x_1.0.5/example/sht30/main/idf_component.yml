@@ -1,4 +1,2 @@
-## IDF Component Manager Manifest File
 dependencies:
   achimpieters/esp32-sht3x: "^1.0.4"
-  override_path: '../../../'
