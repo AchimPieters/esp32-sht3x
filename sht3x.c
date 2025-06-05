@@ -24,6 +24,7 @@
 
 #include "sht3x.h"
 #include <driver/i2c.h>
+#include <freertos/task.h>
 #include <stdio.h>
 
 #define WRITE_BIT I2C_MASTER_WRITE         // I2C master write
@@ -31,6 +32,22 @@
 #define ACK_CHECK_EN 0x1                   // I2C master will check ack from slave
 #define ACK_VAL I2C_MASTER_ACK             // I2C ack value
 #define NACK_VAL I2C_MASTER_NACK           // I2C nack value
+
+static uint8_t sht3x_crc8(const uint8_t *data, size_t len)
+{
+        uint8_t crc = 0xFF;
+        for (size_t i = 0; i < len; i++) {
+                crc ^= data[i];
+                for (int bit = 0; bit < 8; bit++) {
+                        if (crc & 0x80) {
+                                crc = (crc << 1) ^ 0x31;
+                        } else {
+                                crc <<= 1;
+                        }
+                }
+        }
+        return crc;
+}
 
 static esp_err_t sht3x_send_command(uint8_t address, uint16_t command)
 {
@@ -80,6 +97,10 @@ esp_err_t sht3x_read_temperature_humidity(uint8_t address, float *temperature, f
         ret = sht3x_read_data(address, data, sizeof(data));
         if (ret != ESP_OK) {
                 return ret;
+        }
+
+        if (sht3x_crc8(data, 2) != data[2] || sht3x_crc8(data + 3, 2) != data[5]) {
+                return ESP_ERR_INVALID_CRC;
         }
 
         uint16_t temp_raw = (data[0] << 8) | data[1];
