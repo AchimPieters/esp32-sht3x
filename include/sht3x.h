@@ -26,6 +26,7 @@
 #define SHT3X_H_
 
 #include "esp_err.h"
+#include <stdint.h>
 
 #define SHT3X_I2C_PORT I2C_NUM_0
 #define SHT3X_CMD_SOFT_RESET 0x30A2
