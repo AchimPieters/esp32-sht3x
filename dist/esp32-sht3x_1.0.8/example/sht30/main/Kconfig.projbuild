@@ -1,0 +1,27 @@
+menu "SHT3X Configuration"
+
+config SHT3X_I2C_ADDRESS
+    hex "I2C address of the SHT3X sensor"
+    default 0x44
+    range 0x44 0x45
+    help
+        Specify the I2C address of the SHT3X sensor.
+        Common addresses are 0x44 or 0x45, depending on the sensor configuration.
+
+config I2C_MASTER_SCL
+    int "GPIO number for SCL"
+    default 5 if IDF_TARGET_ESP8266
+    default 6 if IDF_TARGET_ESP32C3
+    default 21 if IDF_TARGET_ESP32 || IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+    help
+        GPIO number for I2C master clock line (SCL).
+
+config I2C_MASTER_SDA
+    int "GPIO number for SDA"
+    default 4 if IDF_TARGET_ESP8266
+    default 5 if IDF_TARGET_ESP32C3
+    default 22 if IDF_TARGET_ESP32 || IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+    help
+        GPIO number for I2C master data line (SDA).
+
+endmenu
